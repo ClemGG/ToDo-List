@@ -1,0 +1,21 @@
+{
+    "name": "Project.UIs",
+    "rootNamespace": "",
+    "references": [
+        "GUID:96e69ec9486c44d449916c843c408972",
+        "GUID:fc1b4aa1f063e9242b7b34c0abbe4de0"
+    ],
+    "includePlatforms": [
+        "Editor",
+        "WindowsStandalone32",
+        "WindowsStandalone64"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
