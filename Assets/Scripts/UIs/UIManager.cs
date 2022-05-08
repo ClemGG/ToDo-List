@@ -34,7 +34,7 @@ namespace Project.UIs
         {
             if (CurrentTab)
             {
-                CurrentTab.SetColor(Palette[index]);
+                CurrentTab.SetTabColor(Palette[index]);
             }
         }
 
