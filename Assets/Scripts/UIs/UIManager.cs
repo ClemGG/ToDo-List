@@ -1,4 +1,5 @@
 using Project.Logic;
+using Project.Pool;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,8 +9,11 @@ namespace Project.UIs
     {
         [field: SerializeField] private ColorPalette Palette { get; set; }
         [field: SerializeField] private GameObject PaletteUI { get; set; }
+        [field: SerializeField] private Transform TabPrefab { get; set; }
+        [field: SerializeField] private Transform TaskPrefab { get; set; }
 
         private TabUI CurrentTab { get; set; }
+        private ClassPooler<Transform> PrefabsPooler { get; set; }
 
         #region Mono
 
@@ -36,6 +40,8 @@ namespace Project.UIs
             {
                 CurrentTab.SetTabColor(Palette[index]);
             }
+
+            //TODO: Change all the tasks' colors if any
         }
 
         //Called by the Tab's change color btn
@@ -48,6 +54,8 @@ namespace Project.UIs
         internal void SetTabAsCurrent(TabUI tab)
         {
             CurrentTab = tab;
+
+            //TODO: Disable all other select tab btns
         }
 
         #endregion

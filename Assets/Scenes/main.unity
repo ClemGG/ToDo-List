@@ -554,6 +554,8 @@ MonoBehaviour:
     - serializedVersion: 2
       rgba: 4286644479
   <PaletteUI>k__BackingField: {fileID: 2140651089}
+  <TabPrefab>k__BackingField: {fileID: 1823470706455311186, guid: b79f880b6ac74694d934cdd476f0e91c, type: 3}
+  <TaskPrefab>k__BackingField: {fileID: 548658384217409735, guid: 94d3fe4573ed9ab4e8e527400676622b, type: 3}
 --- !u!1 &366817029
 GameObject:
   m_ObjectHideFlags: 0
