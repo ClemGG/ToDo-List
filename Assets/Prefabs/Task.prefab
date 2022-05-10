@@ -1124,8 +1124,9 @@ GameObject:
   - component: {fileID: 6636393419877177769}
   - component: {fileID: 6636393419877177770}
   - component: {fileID: 6636393419877177771}
+  - component: {fileID: 1703764059730456125}
   m_Layer: 5
-  m_Name: Tache
+  m_Name: Task
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1152,7 +1153,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 100}
+  m_SizeDelta: {x: 575, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6636393419877177772
 CanvasRenderer:
@@ -1231,3 +1232,15 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 6
+--- !u!114 &1703764059730456125
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8558145477074152820}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a66c1a4804aa59740b30de3f48300643, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

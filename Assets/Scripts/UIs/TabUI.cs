@@ -1,25 +1,28 @@
 using Project.Logic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
+using Project.Pool;
 
 namespace Project.UIs
 {
-    internal class TabUI : MonoBehaviour
+    internal class TabUI : MonoBehaviour, IPooled
     {
-        private InputField Field { get; set; }
-        private Image ColorImg { get; set; }
+        private TMP_InputField Field { get; set; }
+        internal Image ColorImg { get; set; }
         private Button ChangeColorBtn { get; set; }
         private Button RemoveTabBtn { get; set; }
-        private Button SetCurrentTabBtn { get; set; }
+        internal Button SetCurrentTabBtn { get; set; }
 
         private UIManager Manager { get; set; }
-        private Tab Tab { get; set; }
+        internal Tab Tab { get; private set; }
 
-        private void Start()
+
+        public void Init()
         {
             Manager = FindObjectOfType<UIManager>();
 
-            Field = GetComponentInChildren<InputField>();
+            Field = GetComponentInChildren<TMP_InputField>();
             ColorImg = transform.GetChild(1).GetComponentInChildren<Image>();
             ChangeColorBtn = transform.GetChild(2).GetChild(0).GetComponentInChildren<Button>();
             RemoveTabBtn = transform.GetChild(2).GetChild(2).GetComponentInChildren<Button>();
@@ -29,20 +32,46 @@ namespace Project.UIs
             ChangeColorBtn.onClick.AddListener(OpenPalettePanel);
             RemoveTabBtn.onClick.AddListener(RemoveTab);
             SetCurrentTabBtn.onClick.AddListener(SetTabAsCurrent);
+
         }
+
+
+
 
         //Called from the Manager when the Tab GameObject is created
         internal void SetTab(Tab tab) 
         {
             Tab = tab;
-            Tab.SetID(transform.GetSiblingIndex());
+            Tab.ID = transform.GetSiblingIndex() + 1;
+
+            SetTabTitle(name);
+            SetTabAsCurrent();
         }
 
         //Called from the InputField
-        internal void SetTabTitle() => Tab.SetTitle(Field.text);
+        internal void SetTabTitle() => Tab.Title = Field.text;
 
         //Called from the Manager
-        internal void SetTabColor(Color32 color) => Tab.SetColor(color);
+        internal void SetTabTitle(string title) => Tab.Title = Field.text = title;
+
+        //Called from the Manager
+        internal void ChangeTabColor(Color32 color)
+        {
+            Tab.Color = color;
+            ColorImg.color = Tab.Color;
+        }
+
+
+
+        internal void AddTask(Task task)
+        {
+            Tab.Tasks.Add(task);
+        }
+
+        internal void RemoveTask(Task task)
+        {
+            Tab.Tasks.Remove(task);
+        }
 
 
         internal void OpenPalettePanel()
@@ -52,12 +81,25 @@ namespace Project.UIs
 
         internal void SetTabAsCurrent()
         {
+            SetCurrentTabBtn.gameObject.SetActive(false);
             Manager.SetTabAsCurrent(this);
         }
 
         internal void RemoveTab()
         {
-            //TODO
+            Manager.RemoveTab(this);
+            Tab.Tasks.Clear();
+        }
+
+
+        public void OnEnqueued()
+        {
+            gameObject.SetActive(false);
+        }
+
+        public void OnDequeued()
+        {
+            gameObject.SetActive(true);
         }
     }
 }

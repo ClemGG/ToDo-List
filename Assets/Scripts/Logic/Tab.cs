@@ -1,15 +1,14 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Project.Logic
 {
-    public struct Tab
+    public class Tab
     {
         public string Title { get; set; }
         public int ID { get; set; } 
         public Color32 Color { get; set; }
+        public List<Task> Tasks { get; set; } = new List<Task>();
 
-        public void SetTitle(string title) => Title = title;
-        public void SetID(int id) => ID = id;
-        public void SetColor(Color32 color) => Color = color;
     }
 }

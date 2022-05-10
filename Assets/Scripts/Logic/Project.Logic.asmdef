@@ -1,7 +1,9 @@
 {
     "name": "Project.Logic",
     "rootNamespace": "",
-    "references": [],
+    "references": [
+        "GUID:28e56e16b0db37b4c84c2b044a0ba440"
+    ],
     "includePlatforms": [
         "Editor",
         "WindowsStandalone32",
