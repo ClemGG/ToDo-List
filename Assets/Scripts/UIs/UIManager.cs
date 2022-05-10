@@ -107,7 +107,6 @@ namespace Project.UIs
         //Referenced in the Tab Prefab Button script OnClick
         internal void SetTabAsCurrent(TabUI tab)
         {
-            CurrentTab = tab;
 
 
             //Disable all other select tab btns
@@ -123,14 +122,24 @@ namespace Project.UIs
 
             //Hides all previous tasks and displays the current ones
             count = TaskContent.childCount;
-            for (int i = 0; i < count; i++)
+            while(count > 0)
             {
-                PrefabsPooler.ReturnToPool(TaskContent.GetChild(i).gameObject, TaskPrefab.name);
+                GameObject taskUI = TaskContent.GetChild(count - 1).gameObject;
+                PrefabsPooler.ReturnToPool(taskUI, TaskPrefab.name); 
+                taskUI.transform.SetParent(transform);
+                count--;
             }
+
+
+            CurrentTab = tab;
             count = CurrentTab.Tab.Tasks.Count;
+
+
             for (int i = 0; i < count; i++)
             {
                 TaskUI taskUI = PrefabsPooler.GetFromPool<GameObject>(TaskPrefab.name).GetComponent<TaskUI>();
+                taskUI.transform.SetParent(TaskContent);
+
                 taskUI.SetTask(CurrentTab.Tab.Tasks[i]);
                 taskUI.SetTaskColor(tab.Tab.Color);
             }
