@@ -2,7 +2,8 @@
     "name": "Project.Save",
     "rootNamespace": "",
     "references": [
-        "GUID:96e69ec9486c44d449916c843c408972"
+        "GUID:96e69ec9486c44d449916c843c408972",
+        "GUID:2aed19d3457c65b4fab65b440f9ce79c"
     ],
     "includePlatforms": [
         "Editor",

@@ -3,6 +3,7 @@ using UnityEngine;
 
 namespace Project.Logic
 {
+    [System.Serializable]
     public class Tab
     {
         public string Title { get; set; }

@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using Project.Logic;
 using Project.Pool;
 using UnityEngine;
@@ -5,7 +7,7 @@ using UnityEngine.UI;
 
 namespace Project.UIs
 {
-    internal class UIManager : MonoBehaviour
+    public class UIManager : MonoBehaviour
     {
         [field: SerializeField] private ColorPalette Palette { get; set; }
         [field: SerializeField] private GameObject PaletteUI { get; set; }
@@ -16,12 +18,18 @@ namespace Project.UIs
         [field: SerializeField] private Button AddTabBtn { get; set; }
         [field: SerializeField] private Button AddTaskBtn { get; set; }
         [field: SerializeField] private int TaskMaxCount { get; set; } = 50;
-        [field: SerializeField] private int TabMaxCount { get; set; } = 20;
+        [field: SerializeField] public int TabMaxCount { get; set; } = 20;
 
 
 
         private TabUI CurrentTab { get; set; }
         private ClassPooler<GameObject> PrefabsPooler { get; set; }
+
+        public Action<Tab> OnTabCreated { get; set; }      
+        public Action<Tab> OnTabRemoved { get; set; }
+        public Func<IEnumerable<Tab>> OnTabsLoaded { get; set; }
+
+
 
         #region Mono
 
@@ -61,7 +69,15 @@ namespace Project.UIs
             //Setup buttons
             AddTabBtn.onClick.AddListener(AddTab);
             AddTaskBtn.onClick.AddListener(AddTask);
+
+            //Load tabs from save file
+            IEnumerable<Tab> loadedTabs = OnTabsLoaded?.Invoke();
+            foreach (Tab tab in loadedTabs)
+            {
+                AddTab(tab);
+            }
         }
+
 
         #endregion
 
@@ -72,15 +88,23 @@ namespace Project.UIs
 
         internal void AddTab()
         {
+            AddTab(null);
+        }
+
+        internal void AddTab(Tab loadedTab)
+        {
             if (TabContent.childCount == TabMaxCount) return;
 
+            bool hasLoadedTab = loadedTab is not null;
             TabUI tabUI = PrefabsPooler.GetFromPool<GameObject>(TabPrefab.name).GetComponent<TabUI>();
             tabUI.transform.SetParent(TabContent);
-            tabUI.name = $"Onglet {tabUI.transform.GetSiblingIndex() + 1}";
 
-            tabUI.SetTab(new Tab());
-            tabUI.ChangeTabColor(Palette.GetRandomColor());
+            tabUI.name = hasLoadedTab ? loadedTab.Title : $"Onglet {tabUI.transform.GetSiblingIndex() + 1}";
+            tabUI.SetTab(hasLoadedTab ? loadedTab : new Tab());
+            tabUI.ChangeTabColor(hasLoadedTab ? loadedTab.Color : Palette.GetRandomColor());
 
+            //Save tabs & tasks in save file
+            OnTabCreated?.Invoke(tabUI.Tab);
         }
 
         internal void RemoveTab(TabUI tabUI)
@@ -101,7 +125,11 @@ namespace Project.UIs
 
                 CurrentTab = null;
             }
+
+            //Save tabs & tasks in save file
+            OnTabRemoved?.Invoke(tabUI.Tab);
         }
+
 
 
         //Referenced in the Tab Prefab Button script OnClick
@@ -173,6 +201,7 @@ namespace Project.UIs
             CurrentTab.RemoveTask(taskUI.Task);
             PrefabsPooler.ReturnToPool(taskUI.gameObject, TaskPrefab.name);
             taskUI.transform.SetParent(transform);
+
         }
 
         #endregion

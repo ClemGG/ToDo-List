@@ -1,6 +1,7 @@
 
 namespace Project.Logic
 {
+    [System.Serializable]
     public class Task
     {
         public string Text { get; set; }
