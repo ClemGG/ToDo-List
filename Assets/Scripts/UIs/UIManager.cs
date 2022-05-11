@@ -72,9 +72,12 @@ namespace Project.UIs
 
             //Load tabs from save file
             IEnumerable<Tab> loadedTabs = OnTabsLoaded?.Invoke();
-            foreach (Tab tab in loadedTabs)
+            if (loadedTabs is not null)
             {
-                AddTab(tab);
+                foreach (Tab tab in loadedTabs)
+                {
+                    AddTab(tab);
+                }
             }
         }
 

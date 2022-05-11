@@ -2,6 +2,7 @@
 using Project.UIs;
 using Project.Logic;
 using System.Collections.Generic;
+using System;
 
 namespace Project.Save
 {
@@ -12,7 +13,7 @@ namespace Project.Save
         private UIManager Manager { get; set; }
         private List<Tab> TabsToSave { get; set; }
 
-        private void Start()
+        private void Awake()
         {
             Manager = FindObjectOfType<UIManager>();
             TabsToSave = new List<Tab>(Manager.TabMaxCount);
@@ -22,6 +23,17 @@ namespace Project.Save
             Manager.OnTabsLoaded += Load;
 
             Application.quitting += Save;
+            Application.quitting += OnQuit;
+        }
+
+        private void OnQuit()
+        {
+            Manager.OnTabCreated -= AddTab;
+            Manager.OnTabRemoved -= RemoveTab;
+            Manager.OnTabsLoaded -= Load;
+                                 
+            Application.quitting -= Save;
+            Application.quitting -= OnQuit;
         }
 
         private void AddTab(Tab tab)
@@ -37,7 +49,6 @@ namespace Project.Save
         private IEnumerable<Tab> Load()
         {
             string[] savedFiles = BinarySerializer.GetAllSaveFileNames();
-
             for (int i = 0; i < savedFiles.Length; i++)
             {
                 string path = string.Format("{0}/{1}{2}", BinarySerializer.saveFolderPath, $"{FileName}{i + 1}", BinarySerializer.saveFileExtension);
